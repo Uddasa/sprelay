@@ -1,6 +1,7 @@
 package com.uddasa.sprelay.app;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
@@ -10,7 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedOutputStream;
@@ -31,14 +36,13 @@ public class MainActivity extends ActionBarActivity {
 
     private String MAC_FILE_PATH = "/efs/wifi/.mac.info";
     private String mOriginalMAC = "";
-
     private WifiApManager wifiMan;
-
     private Handler handler = new Handler();
+    private boolean isLandscape = false;
 
     // DONE on app exit, stop wifi
+    // DONE keep wifi awake
     // TODO set mac file permissions
-    // TODO stay wifi awake
     // TODO import MAC addresses from text file
     // TODO add a selector of setting MAC methods
 
@@ -174,6 +178,21 @@ public class MainActivity extends ActionBarActivity {
         }, 2000);
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+            isLandscape = true;
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+            isLandscape = false;
+        }
+        updateUI();
+    }
+
     private void showMsg(String str) {
         Toast toast = Toast.makeText(this, str, Toast.LENGTH_SHORT);
         toast.show();
@@ -228,43 +247,59 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void updateUI() {
-        String mac = getMAC();
-        //TextView myTextView = (TextView) findViewById(R.id.textCurrentMAC);
-        //myTextView.setText(mac);
-        // Fill current MAC list
-        Spinner myspinner = (Spinner) findViewById(R.id.spinnerCurrentMAC);
-        List<String> list = new ArrayList<String>();
-        list.add(mac);
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        myspinner.setAdapter(dataAdapter);
+        // Set current MAC
+        String mac = "Current MAC     " + getMAC();
+        TextView textmac = (TextView) findViewById(R.id.lblMAC);
+        textmac.setText(mac);
 
-        Button btToggle = (Button) findViewById(R.id.buttonToggleWifi);
-        Button btPause = (Button) findViewById(R.id.buttonPause);
-        Button btNext = (Button) findViewById(R.id.buttonNext);
+        ImageButton btToggle = (ImageButton) findViewById(R.id.buttonToggleWifi);
+        ImageButton btPause = (ImageButton) findViewById(R.id.buttonPause);
+        ImageButton btNext = (ImageButton) findViewById(R.id.buttonNext);
 
         if (wifiMan.isWifiApEnabled()) {
-            btToggle.setText("Stop");
+            //btToggle.setText("Stop");
+            btToggle.setImageResource(R.drawable.stop_512x512);
             btPause.setEnabled(true);
             btNext.setEnabled(true);
+            btPause.setVisibility(View.VISIBLE);
+            btNext.setVisibility(View.VISIBLE);
         }
         else {
-            btToggle.setText("Start");
+            //btToggle.setText("Start");
+            btToggle.setImageResource(R.drawable.play_512x512);
             btPause.setEnabled(false);
             btNext.setEnabled(false);
+            btPause.setVisibility(View.INVISIBLE);
+            btNext.setVisibility(View.INVISIBLE);
         }
 
-        if (cyclePaused == false)
-            btPause.setText("Pause");
+        if (cyclePaused == true)
+            btPause.setImageResource(R.drawable.play_512x512);
         else
-            btPause.setText("Unpause");
+            btPause.setImageResource(R.drawable.pause512x512);
+
+        /*
+        // Handle screen orientation
+        LinearLayout layMedia = (LinearLayout) findViewById(R.id.layoutMedia);
+
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)layMedia.getLayoutParams();
+        //params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+        if (isLandscape == false) {
+            params.addRule(RelativeLayout.RIGHT_OF, R.id.lblCooldown);
+        }
+        else {
+            params.addRule(RelativeLayout.ALIGN_RIGHT, R.id.spinnerCooldown);
+            //params.addRule(RelativeLayout.ABOVE, R.id.spinnerCooldown);
+        }
+        layMedia.setLayoutParams(params); //causes layout update
+        */
     }
 
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
             cycleMAC();
-            showMsg("poop");
             handler.postDelayed(this, getCoolDownTimeInMs());
         }
     };
@@ -287,8 +322,7 @@ public class MainActivity extends ActionBarActivity {
             System.out.println("Could not parse " + nfe);
         }
 
-        return 15000;
-        //return ( time * 60 * 1000);
+        return ( time * 60 * 1000);
     }
 
     boolean cyclePaused = false;

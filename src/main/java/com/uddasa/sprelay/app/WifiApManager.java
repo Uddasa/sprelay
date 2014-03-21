@@ -94,7 +94,7 @@ public class WifiApManager {
 
         // If AP Wifi is enabled, disables it and returns:
         if(isWifiApEnabled()) {
-            lock.release();
+            //lock.release();
             setWifiApEnabled(conf, false);
             int maxIter = MAX_ITER;
             while (isWifiApEnabled() && maxIter-- >= 0) {
@@ -105,7 +105,8 @@ public class WifiApManager {
 
         // If standard Wifi is enabled, disables it:
         if (isWifiEnabled()) {
-            lock.release();
+            //if (lock.isHeld())
+                //lock.release();
             if (wifiMan.setWifiEnabled(false)) {
                 int maxIter = MAX_ITER;
                 while (wifiMan.isWifiEnabled() && maxIter-- >= 0) {
@@ -129,8 +130,8 @@ public class WifiApManager {
             }
             // Lock wifi if succeeded
             if (isWifiApEnabled()) {
-                lock = wifiMan.createWifiLock(WifiManager.WIFI_MODE_FULL, "SPRelay");
-                lock.acquire();
+                //lock = wifiMan.createWifiLock(WifiManager.WIFI_MODE_FULL, "SPRelay");
+                //lock.acquire();
             }
         } catch(Exception e) {
             e.printStackTrace();

@@ -1,12 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.uddasa.sprelay.app.MainActivity"><![CDATA[
+    tools:context="com.uddasa.sprelay.app.MainActivity"
+    android:layoutMode="clipBounds"><![CDATA[
 
     TextView
         android:text="@string/hello_world"
@@ -17,18 +14,74 @@
 
 
 
+
+
     ]]>
 
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imageView"
+        android:background="@drawable/background"
+        android:cropToPadding="false"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true" />
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Current MAC :"
         android:id="@+id/lblMAC"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:gravity="fill_horizontal"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/spinnerMAC" />
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:textStyle="bold"
+        android:typeface="sans"
+        android:paddingTop="@dimen/activity_vertical_margin" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageHorizontalSep1"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/separator"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/lblMAC"
+        android:adjustViewBounds="false"
+        android:cropToPadding="false"
+        android:layout_alignParentEnd="true"
+        android:layout_alignWithParentIfMissing="false"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageHorizontalSep2"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/separator"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/spinnerCooldown"
+        android:adjustViewBounds="false"
+        android:cropToPadding="false"
+        android:layout_alignParentEnd="true"
+        android:layout_alignWithParentIfMissing="false"
+        android:visibility="invisible" />
+
+    <Spinner
+        android:layout_width="184dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerMAC"
+        android:longClickable="false"
+        android:singleLine="true"
+        android:layout_gravity="right|bottom"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:layout_alignBottom="@+id/lblNewMAC"
+        android:layout_toRightOf="@+id/lblCooldown" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -36,22 +89,24 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Cooldown Time :"
         android:id="@+id/lblCooldown"
+        android:layout_gravity="left|bottom"
         android:layout_below="@+id/lblNewMAC"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="40dp" />
+        android:layout_marginTop="30dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin" />
 
-    <Button
-        android:layout_width="wrap_content"
+    <Spinner
+        android:layout_width="174dp"
         android:layout_height="wrap_content"
-        android:text="Start"
-        android:id="@+id/buttonToggleWifi"
-        android:onClick="buttonToggleWifi"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:id="@+id/spinnerCooldown"
+        android:textAlignment="textEnd"
+        android:gravity="right"
+        android:layout_gravity="right|center_vertical"
+        android:layout_alignRight="@+id/spinnerMAC"
+        android:layout_alignEnd="@+id/spinnerMAC"
+        android:layout_alignBottom="@+id/lblCooldown"
+        android:layout_toRightOf="@+id/lblCooldown" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -59,62 +114,67 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="New MAC :"
         android:id="@+id/lblNewMAC"
-        android:layout_marginTop="40dp"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/lblMAC"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/spinnerMAC" />
+        android:paddingLeft="@dimen/activity_horizontal_margin" />
 
-    <Spinner
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/spinnerMAC"
-        android:longClickable="false"
-        android:singleLine="true"
-        android:layout_gravity="center_vertical"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="false"
+        android:layout_below="@+id/spinnerCooldown"
         android:layout_weight="1"
-        android:layout_alignTop="@+id/lblNewMAC"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/lblCooldown"
-        android:gravity="right" />
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:id="@+id/layoutMedia"
+        android:layout_alignLeft="@+id/lblCooldown">
 
-    <Spinner
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerCooldown"
-        android:layout_alignTop="@+id/lblCooldown"
-        android:layout_toRightOf="@+id/lblCooldown"
-        android:textAlignment="textEnd"
-        android:gravity="right"
-        android:layout_alignParentRight="true" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:id="@+id/buttonToggleWifi"
+            android:src="@drawable/play_512x512"
+            android:onClick="buttonToggleWifi"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:layout_gravity="right"
+            android:cropToPadding="true"
+            android:visibility="visible"
+            style="?android:attr/borderlessButtonStyle"/>
 
-    <Spinner
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerCurrentMAC"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/lblNewMAC"
-        android:gravity="right" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pause"
+            android:id="@+id/buttonPause"
+            android:src="@drawable/pause512x512"
+            android:onClick="buttonPauseCycle"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:layout_gravity="center_horizontal"
+            style="?android:attr/borderlessButtonStyle"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pause"
-        android:id="@+id/buttonPause"
-        android:layout_above="@+id/buttonToggleWifi"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="buttonPauseCycle" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:id="@+id/buttonNext"
+            android:src="@drawable/forward_512x512"
+            android:onClick="buttonNextMAC"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:layout_gravity="left"
+            style="?android:attr/borderlessButtonStyle"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Next"
-        android:id="@+id/buttonNext"
-        android:layout_above="@+id/buttonToggleWifi"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="buttonNextMAC" />
+    </LinearLayout>
 
 </RelativeLayout>
