@@ -40,6 +40,7 @@ public class MainActivity extends ActionBarActivity {
     private Handler handler = new Handler();
     private boolean isLandscape = false;
 
+    // Plop
     // DONE on app exit, stop wifi
     // DONE keep wifi awake
     // TODO set mac file permissions
